@@ -1,12 +1,12 @@
 import * as Ic from './icons.jsx'
 
 export const CATEGORIES = [
-  { id: 'pothole', label: 'Pothole', dev: 'खड्डा', icon: Ic.Pothole, dept: 'Roads' },
-  { id: 'garbage', label: 'Garbage', dev: 'कचरा', icon: Ic.Garbage, dept: 'Solid Waste Management' },
-  { id: 'streetlight', label: 'Streetlight', dev: 'दिवा', icon: Ic.Streetlight, dept: 'Electrical' },
-  { id: 'footpath', label: 'Footpath', dev: 'पदपथ', icon: Ic.Footpath, dept: 'Roads' },
-  { id: 'water', label: 'Water', dev: 'पाणी', icon: Ic.Water, dept: 'Hydraulic Engineering' },
-  { id: 'other', label: 'Other', dev: 'इतर', icon: Ic.Other, dept: 'General' },
+  { id: 'pothole', label: 'Pothole', key: 'catPothole', icon: Ic.Pothole, dept: 'Roads' },
+  { id: 'garbage', label: 'Garbage', key: 'catGarbage', icon: Ic.Garbage, dept: 'Solid Waste Management' },
+  { id: 'streetlight', label: 'Streetlight', key: 'catStreetlight', icon: Ic.Streetlight, dept: 'Electrical' },
+  { id: 'footpath', label: 'Footpath', key: 'catFootpath', icon: Ic.Footpath, dept: 'Roads' },
+  { id: 'water', label: 'Water', key: 'catWater', icon: Ic.Water, dept: 'Hydraulic Engineering' },
+  { id: 'other', label: 'Other', key: 'catOther', icon: Ic.Other, dept: 'General' },
 ]
 
 export const catById = (id) => CATEGORIES.find((c) => c.id === id)
@@ -94,9 +94,9 @@ export const AROUND = [
 export const AROUND_STATS = { fixed: 8, open: 5 }
 
 export const OTHER_WAYS = [
-  { icon: Ic.Phone, title: 'Call 1916', sub: 'Toll free · 24 hours' },
+  { icon: Ic.Phone, titleKey: 'call1916', subKey: 'tollFree' },
   { icon: Ic.Chat, title: 'WhatsApp', sub: '+91 89999 28999' },
-  { icon: Ic.Globe, title: 'Website', sub: 'portal.mcgm.gov.in' },
+  { icon: Ic.Globe, titleKey: 'website', sub: 'portal.mcgm.gov.in' },
 ]
 
 export function newComplaintId() {

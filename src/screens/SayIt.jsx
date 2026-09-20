@@ -1,35 +1,36 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Screen, TopBar } from '../components.jsx'
+import { MascotHead } from '../brand.jsx'
 import * as Ic from '../icons.jsx'
 import { CATEGORIES, MOCK_LOCATION, catById } from '../data.js'
 import { useStore } from '../store.jsx'
+import { useLang } from '../i18n.jsx'
 import { usePhotoPicker } from './FileReport.jsx'
 
+// Keyword hints across English, Hindi/Hinglish and Marathi
 const KEYWORDS = {
-  pothole: ['pothole', 'khadda', 'खड्डा', 'hole', 'road broken', 'crater'],
+  pothole: ['pothole', 'khadda', 'खड्डा', 'गड्ढा', 'hole', 'road broken', 'crater'],
   garbage: ['garbage', 'kachra', 'कचरा', 'trash', 'waste', 'bin', 'dustbin', 'smell'],
-  streetlight: ['light', 'lamp', 'दिवा', 'batti', 'dark', 'streetlight'],
-  footpath: ['footpath', 'pavement', 'tiles', 'पदपथ', 'sidewalk', 'paver'],
-  water: ['water', 'pani', 'पाणी', 'leak', 'pipe', 'flood', 'logging', 'drain'],
+  streetlight: ['light', 'lamp', 'दिवा', 'लाइट', 'batti', 'बत्ती', 'dark', 'streetlight'],
+  footpath: ['footpath', 'pavement', 'tiles', 'पदपथ', 'फुटपाथ', 'sidewalk', 'paver'],
+  water: ['water', 'pani', 'पाणी', 'पानी', 'leak', 'pipe', 'flood', 'logging', 'drain'],
 }
 
 function detectCategory(text) {
-  const t = text.toLowerCase()
-  for (const [id, words] of Object.entries(KEYWORDS)) if (words.some((w) => t.includes(w))) return id
+  const s = text.toLowerCase()
+  for (const [id, words] of Object.entries(KEYWORDS)) if (words.some((w) => s.includes(w))) return id
   return null
 }
 
-// Canned "transcripts" used when the mic is tapped and speech recognition is unavailable
-const CANNED = {
-  problem: 'There is a big pothole on the road near the bus stop. Rickshaws keep swerving around it.',
-  extra: 'It has been there for about two weeks.',
-}
+const YES = /^(y|yes|ho|haan|han|हो|हां|हाँ)/i
+const LOC = /location|gps|here|यहाँ|यहां|इथे|जगह|ठिकाण/i
+const NO = /skip|no|nahi|नहीं|नाही|छोड़|वगळ/i
 
-const Bot = ({ children, img }) => (
+const Bot = ({ children, mood = 'friendly' }) => (
   <div className="msg bot fade-in">
-    <span className="avatar"><Ic.MascotFace /></span>
-    <div className="body">{children}{img && <img src={img} alt="" />}</div>
+    <span className="avatar"><MascotHead mood={mood} /></span>
+    <div className="body">{children}</div>
   </div>
 )
 const User = ({ children, img }) => (
@@ -38,11 +39,12 @@ const User = ({ children, img }) => (
   </div>
 )
 const Typing = () => (
-  <div className="msg bot"><span className="avatar"><Ic.MascotFace /></span><div className="body"><span className="typing"><i /><i /><i /></span></div></div>
+  <div className="msg bot"><span className="avatar"><MascotHead mood="focused" /></span><div className="body"><span className="typing"><i /><i /><i /></span></div></div>
 )
 
 export default function SayIt() {
   const nav = useNavigate()
+  const { t, meta } = useLang()
   const { draft, update, submit } = useStore()
   const [msgs, setMsgs] = useState([])
   const [stage, setStage] = useState('intro') // intro | problem | confirm | pick | photo | where | address | review | sending
@@ -52,10 +54,10 @@ export default function SayIt() {
   const endRef = useRef(null)
   const recRef = useRef(null)
 
-  const say = (node, delay = 700) =>
+  const say = (node, delay = 700, mood) =>
     new Promise((res) => {
       setTyping(true)
-      setTimeout(() => { setTyping(false); setMsgs((m) => [...m, { who: 'bot', node }]); res() }, delay)
+      setTimeout(() => { setTyping(false); setMsgs((m) => [...m, { who: 'bot', node, mood }]); res() }, delay)
     })
   const mine = (node, img) => setMsgs((m) => [...m, { who: 'user', node, img }])
 
@@ -65,8 +67,8 @@ export default function SayIt() {
     if (started.current) return
     started.current = true
     ;(async () => {
-      await say('Hello. I can file the complaint for you.', 500)
-      await say('Tell me what the problem is. You can speak, or type below.')
+      await say(t('botHello'), 500)
+      await say(t('botTellMe'))
       setStage('problem')
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,97 +78,90 @@ export default function SayIt() {
 
   const { open: openCamera, input: fileInput } = usePhotoPicker(async (photo, photoAt) => {
     update({ photo, photoAt })
-    mine('Here is the photo.', photo)
-    await say(`Got it. The photo has the time (${photoAt}) and location attached.`)
+    mine(t('herePhoto'), photo)
+    await say(t('botGotPhoto', { t: photoAt }))
     askWhere()
   })
 
   /* ---- conversation steps ---- */
-  const handleProblem = async (t) => {
-    mine(t)
-    const cat = detectCategory(t)
-    update({ description: t })
+  const handleProblem = async (v) => {
+    mine(v)
+    const cat = detectCategory(v)
+    update({ description: v })
     if (cat) {
       update({ category: cat })
-      await say(<>That sounds like a <b>{catById(cat).label}</b> problem. Is that right?</>)
+      await say(t('botSoundsLike', { cat: t(catById(cat).key) }))
       setStage('confirm')
     } else {
-      await say('Thanks. Which of these describes it best?')
+      await say(t('botWhichBest'))
       setStage('pick')
     }
   }
 
-  const confirmYes = async () => {
-    mine('Yes, that is right')
-    askPhoto()
-  }
+  const confirmYes = () => { mine(t('yesRight')); askPhoto() }
   const confirmNo = async () => {
-    mine('No, something else')
-    await say('No problem. Pick the closest one:')
+    mine(t('noElse'))
+    await say(t('botPickClosest'))
     setStage('pick')
   }
-  const pick = async (id) => {
-    update({ category: id })
-    mine(catById(id).label)
-    askPhoto()
-  }
+  const pick = (id) => { update({ category: id }); mine(t(catById(id).key)); askPhoto() }
 
   const askPhoto = async () => {
-    await say('Can you take a photo of it? It helps the team find the exact spot.')
+    await say(t('botAskPhoto'))
     setStage('photo')
   }
   const skipPhoto = async () => {
-    mine('Skip the photo')
-    await say('Okay, we can continue without one.')
+    mine(t('skipPhoto'))
+    await say(t('botOkNoPhoto'))
     askWhere()
   }
 
   const askWhere = async () => {
-    await say('Where is it? I can use your phone location, or you can tell me the address.')
+    await say(t('botAskWhere'))
     setStage('where')
   }
   const useLocation = async () => {
-    mine('Use my location')
-    await say('Finding your location…', 300)
+    mine(t('useLoc'))
+    await say(t('finding'), 300, 'focused')
     await new Promise((r) => setTimeout(r, 1200))
     update({ location: MOCK_LOCATION })
-    await say(<>Found it: <b>{MOCK_LOCATION.label}</b>, {MOCK_LOCATION.ward}.</>, 200)
+    await say(t('botFoundIt', { loc: MOCK_LOCATION.label, ward: MOCK_LOCATION.ward }), 200)
     review()
   }
   const typeAddress = async () => {
-    mine('I will tell you the address')
-    await say('Go ahead, type or say the landmark or road.')
+    mine(t('tellAddr'))
+    await say(t('botGoAhead'))
     setStage('address')
   }
-  const handleAddress = async (t) => {
-    mine(t)
-    update({ location: { ...MOCK_LOCATION, label: t, address: t } })
-    await say(<>Noted: <b>{t}</b>.</>)
+  const handleAddress = async (v) => {
+    mine(v)
+    update({ location: { ...MOCK_LOCATION, label: v, address: v } })
+    await say(t('botNoted', { t: v }))
     review()
   }
 
   const review = async () => {
-    await say('Here is what I have. Shall I report it?', 900)
+    await say(t('botHereIs'), 900)
     setStage('review')
   }
   const reportIt = async () => {
-    mine('Yes, report it')
+    mine(t('yesReport'))
     setStage('sending')
-    await say('Sending to BMC…', 400)
+    await say(t('botSending'), 400, 'focused')
     setTimeout(() => { submit(); nav('/report/new/done', { replace: true }) }, 1200)
   }
 
   /* ---- input handling ---- */
-  const send = (t) => {
-    const v = (t ?? text).trim()
+  const send = (v0) => {
+    const v = (v0 ?? text).trim()
     if (!v) return
     setText('')
     if (stage === 'problem') handleProblem(v)
     else if (stage === 'address') handleAddress(v)
-    else if (stage === 'confirm') (/^(y|yes|ho|haan|हो|हाँ)/i.test(v) ? confirmYes() : confirmNo())
-    else if (stage === 'where') (/location|gps|here|यहाँ|इथे/i.test(v) ? useLocation() : handleAddress(v))
-    else if (stage === 'photo') (/skip|no|nahi|नाही/i.test(v) ? skipPhoto() : openCamera())
-    else if (stage === 'review') (/^(y|yes|ho|haan|हो|हाँ)/i.test(v) ? reportIt() : nav('/report/new/review'))
+    else if (stage === 'confirm') (YES.test(v) ? confirmYes() : confirmNo())
+    else if (stage === 'where') (LOC.test(v) ? useLocation() : handleAddress(v))
+    else if (stage === 'photo') (NO.test(v) ? skipPhoto() : openCamera())
+    else if (stage === 'review') (YES.test(v) ? reportIt() : nav('/report/new/review'))
     else { mine(v); update({ description: `${draft.description} ${v}`.trim() }) }
   }
 
@@ -177,7 +172,7 @@ export default function SayIt() {
     if (SR) {
       const rec = new SR()
       recRef.current = rec
-      rec.lang = 'en-IN'
+      rec.lang = meta.speech
       rec.interimResults = false
       rec.onresult = (e) => { setListening(false); send(e.results[0][0].transcript) }
       rec.onerror = () => { setListening(false); fallbackVoice() }
@@ -189,11 +184,11 @@ export default function SayIt() {
   }
   // Pretend we heard something sensible for the current stage
   const fallbackVoice = () => {
-    if (stage === 'problem') send(CANNED.problem)
-    else if (stage === 'address') send('Opposite Jehangir Art Gallery, Kala Ghoda')
-    else if (stage === 'confirm' || stage === 'review') send('Yes')
-    else if (stage === 'where') send('Use my location')
-    else send(CANNED.extra)
+    if (stage === 'problem') send(t('cannedProblem'))
+    else if (stage === 'address') send(t('cannedAddr'))
+    else if (stage === 'confirm' || stage === 'review') send(t('yes'))
+    else if (stage === 'where') send(t('useLoc'))
+    else send(t('yes'))
   }
 
   const cat = draft.category ? catById(draft.category) : null
@@ -201,21 +196,21 @@ export default function SayIt() {
 
   return (
     <Screen tabs={false} className="chat-screen">
-      <TopBar back="/report/new" title="Say it" right={
-        <button className="iconbtn" title="Switch to typing" onClick={() => nav('/report/new/photo')}><Ic.Keyboard /></button>
+      <TopBar back="/report/new" title={t('sayIt')} right={
+        <button className="iconbtn" title={t('switchTyping')} onClick={() => nav('/report/new/photo')}><Ic.Keyboard /></button>
       } />
       {fileInput}
 
       <div className="chat">
-        {msgs.map((m, i) => m.who === 'bot' ? <Bot key={i}>{m.node}</Bot> : <User key={i} img={m.img}>{m.node}</User>)}
+        {msgs.map((m, i) => m.who === 'bot' ? <Bot key={i} mood={m.mood}>{m.node}</Bot> : <User key={i} img={m.img}>{m.node}</User>)}
         {typing && <Typing />}
 
         {stage === 'review' && !typing && (
           <div className="card fade-in" style={{ alignSelf: 'stretch' }}>
             <dl className="kv" style={{ gridTemplateColumns: '64px 1fr' }}>
-              <dt>What</dt><dd>{cat?.label}<span className="small" style={{ display: 'block', fontWeight: 400 }}>{draft.description}</span></dd>
-              <dt>Where</dt><dd>{draft.location?.label}</dd>
-              <dt>Photo</dt><dd>{draft.photo ? 'Attached' : 'None'}</dd>
+              <dt>{t('what')}</dt><dd>{cat && t(cat.key)}<span className="small" style={{ display: 'block', fontWeight: 400 }}>{draft.description}</span></dd>
+              <dt>{t('where')}</dt><dd>{draft.location?.label}</dd>
+              <dt>{t('photo')}</dt><dd>{draft.photo ? t('attached') : t('none')}</dd>
             </dl>
           </div>
         )}
@@ -227,36 +222,36 @@ export default function SayIt() {
         <div className="quick">
           {stage === 'problem' && msgs.length >= 2 && (
             <>
-              <button className="chip" onClick={() => send('There is a pothole near the bus stop')}>Pothole near bus stop</button>
-              <button className="chip" onClick={() => send('Garbage has not been collected for 3 days')}>Garbage not collected</button>
-              <button className="chip" onClick={() => send('The streetlight outside is not working')}>Streetlight off</button>
+              <button className="chip" onClick={() => send(t('quick1'))}>{t('quick1')}</button>
+              <button className="chip" onClick={() => send(t('quick2'))}>{t('quick2')}</button>
+              <button className="chip" onClick={() => send(t('quick3'))}>{t('quick3')}</button>
             </>
           )}
           {stage === 'confirm' && (
             <>
-              <button className="chip active" onClick={confirmYes}>Yes, that is right</button>
-              <button className="chip" onClick={confirmNo}>No, something else</button>
+              <button className="chip active" onClick={confirmYes}>{t('yesRight')}</button>
+              <button className="chip" onClick={confirmNo}>{t('noElse')}</button>
             </>
           )}
           {stage === 'pick' && CATEGORIES.map((c) => (
-            <button key={c.id} className="chip" onClick={() => pick(c.id)}>{c.label}</button>
+            <button key={c.id} className="chip" onClick={() => pick(c.id)}>{t(c.key)}</button>
           ))}
           {stage === 'photo' && (
             <>
-              <button className="chip active" onClick={openCamera}>📷 Take photo</button>
-              <button className="chip" onClick={skipPhoto}>Skip</button>
+              <button className="chip active" onClick={openCamera}>📷 {t('takePhoto')}</button>
+              <button className="chip" onClick={skipPhoto}>{t('skip')}</button>
             </>
           )}
           {stage === 'where' && (
             <>
-              <button className="chip active" onClick={useLocation}>Use my location</button>
-              <button className="chip" onClick={typeAddress}>Type the address</button>
+              <button className="chip active" onClick={useLocation}>{t('useLoc')}</button>
+              <button className="chip" onClick={typeAddress}>{t('typeAddr')}</button>
             </>
           )}
           {stage === 'review' && (
             <>
-              <button className="chip active" onClick={reportIt}>Yes, report it</button>
-              <button className="chip" onClick={() => nav('/report/new/review')}>Edit details</button>
+              <button className="chip active" onClick={reportIt}>{t('yesReport')}</button>
+              <button className="chip" onClick={() => nav('/report/new/review')}>{t('editDetails')}</button>
             </>
           )}
         </div>
@@ -265,7 +260,7 @@ export default function SayIt() {
       <div className="composer">
         <input
           className="input"
-          placeholder={listening ? 'Listening…' : canType ? 'Type here…' : 'Use the buttons above'}
+          placeholder={listening ? t('listening') : canType ? t('typeHere') : t('useButtons')}
           value={text}
           disabled={!canType || listening}
           onChange={(e) => setText(e.target.value)}

@@ -98,13 +98,3 @@ export const Other = (p) => (
   <I {...p}><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></I>
 )
 
-/* Mascot placeholder – simple friendly face on the yellow tile */
-export const MascotFace = (p) => (
-  <svg viewBox="0 0 48 48" fill="none" {...p}>
-    <circle cx="24" cy="26" r="15" fill="#F7F5EF" />
-    <path d="M9 26c0-10 6-17 15-17s15 7 15 17" fill="#171717" />
-    <circle cx="18.5" cy="27" r="1.9" fill="#171717" />
-    <circle cx="29.5" cy="27" r="1.9" fill="#171717" />
-    <path d="M18 33c2 2.5 10 2.5 12 0" stroke="#171717" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-)

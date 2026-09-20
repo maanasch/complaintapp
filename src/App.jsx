@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { StoreProvider } from './store.jsx'
+import { LangProvider } from './i18n.jsx'
 import { TabBar } from './components.jsx'
 import Home from './screens/Home.jsx'
 import ReportHub from './screens/ReportHub.jsx'
@@ -17,6 +18,7 @@ export default function App() {
   const showTabs = !HIDE_TABS.test(pathname)
 
   return (
+    <LangProvider>
     <StoreProvider>
       <div className="frame">
         <div className="device">
@@ -46,5 +48,6 @@ export default function App() {
         </div>
       </div>
     </StoreProvider>
+    </LangProvider>
   )
 }

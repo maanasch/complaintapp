@@ -4,9 +4,22 @@ import { Screen, TopBar, ReportRow, Pill, Mascot } from '../components.jsx'
 import * as Ic from '../icons.jsx'
 import { catById } from '../data.js'
 import { useStore } from '../store.jsx'
+import { useT } from '../i18n.jsx'
+
+function Filters({ value, onChange }) {
+  const t = useT()
+  return (
+    <div className="chips">
+      {[['all', t('all')], ['open', t('inProgress')], ['fixed', t('fixed')]].map(([k, l]) => (
+        <button key={k} className={`chip ${value === k ? 'active' : ''}`} onClick={() => onChange(k)}>{l}</button>
+      ))}
+    </div>
+  )
+}
 
 export function MyReports() {
   const nav = useNavigate()
+  const t = useT()
   const { reports } = useStore()
   const [filter, setFilter] = useState('all')
   const shown = reports.filter((r) =>
@@ -15,24 +28,20 @@ export function MyReports() {
 
   return (
     <Screen>
-      <TopBar back="/report" title="My reports" />
+      <TopBar back="/report" title={t('myReports')} />
       <div className="content">
-        <div className="chips">
-          {[['all', 'All'], ['open', 'In progress'], ['fixed', 'Fixed']].map(([k, l]) => (
-            <button key={k} className={`chip ${filter === k ? 'active' : ''}`} onClick={() => setFilter(k)}>{l}</button>
-          ))}
-        </div>
+        <Filters value={filter} onChange={setFilter} />
 
         <div className="list">
           {shown.map((r) => (
             <ReportRow key={r.id} r={r} right={r.id} onClick={() => nav(`/report/my/${r.id}`)} />
           ))}
-          {shown.length === 0 && <p className="sub center" style={{ padding: 30 }}>Nothing here yet.</p>}
+          {shown.length === 0 && <p className="sub center" style={{ padding: 30 }}>{t('nothingYet')}</p>}
         </div>
 
         <button className="option" onClick={() => nav('/report/check')}>
           <span className="ico" style={{ background: 'var(--yellow-soft)', color: '#9a6a00' }}><Ic.Search /></span>
-          <span className="txt"><b>Have a complaint number?</b><span>Check its status without logging in.</span></span>
+          <span className="txt"><b>{t('haveNumber')}</b><span>{t('haveNumberSub')}</span></span>
           <span className="chev"><Ic.Chevron /></span>
         </button>
       </div>
@@ -42,11 +51,12 @@ export function MyReports() {
 
 export function ReportDetail() {
   const nav = useNavigate()
+  const t = useT()
   const { id } = useParams()
   const { reports } = useStore()
   const r = reports.find((x) => x.id === id)
   if (!r) return (
-    <Screen><TopBar back title="Report" /><div className="content"><p className="sub">Report not found.</p></div></Screen>
+    <Screen><TopBar back title={t('yourReport')} /><div className="content"><p className="sub">{t('notFound')}</p></div></Screen>
   )
   const cat = catById(r.category)
   const Icon = cat.icon
@@ -54,7 +64,7 @@ export function ReportDetail() {
 
   return (
     <Screen>
-      <TopBar back title="Your report" />
+      <TopBar back title={t('yourReport')} />
       <div className="content">
         <div className="card flush">
           {r.photo ? (
@@ -72,37 +82,33 @@ export function ReportDetail() {
             <h1 className="h2">{r.title}</h1>
             <p className="sub">{r.description}</p>
             <dl className="kv">
-              <dt>Type</dt><dd>{cat.label}</dd>
-              <dt>Where</dt><dd>{r.location}</dd>
-              <dt>Ward</dt><dd>{r.ward}</dd>
-              <dt>Reported</dt><dd>{r.reported}</dd>
-              <dt>Dept.</dt><dd>{cat.dept}</dd>
+              <dt>{t('type')}</dt><dd>{t(cat.key)}</dd>
+              <dt>{t('where')}</dt><dd>{r.location}</dd>
+              <dt>{t('ward')}</dt><dd>{r.ward}</dd>
+              <dt>{t('reportedOn')}</dt><dd>{r.reported}</dd>
+              <dt>{t('dept')}</dt><dd>{cat.dept}</dd>
             </dl>
           </div>
         </div>
 
         <section className="card">
-          <h2 className="h3" style={{ marginBottom: 14 }}>Progress</h2>
+          <h2 className="h3" style={{ marginBottom: 14 }}>{t('progress')}</h2>
           <div className="timeline">
             {r.timeline.map((s, i) => (
               <div key={i} className={`tl ${i < doneIdx ? 'done' : i === doneIdx ? (r.status === 'fixed' ? 'done' : 'now') : ''}`}>
                 <div className="dot"><i /></div>
                 <div className="body">
                   <b>{s.title}</b>
-                  <span>{s.t ? `${s.t}${s.note ? ' · ' + s.note : ''}` : s.note || 'Pending'}</span>
+                  <span>{s.t ? `${s.t}${s.note ? ' · ' + s.note : ''}` : s.note || t('pending')}</span>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {r.status !== 'fixed' && (
-          <Mascot>
-            No update for 7 days? You can escalate this complaint from here, or call <b>1916</b> with the number.
-          </Mascot>
-        )}
-        {r.status !== 'fixed' && <button className="btn btn-secondary">Escalate complaint</button>}
-        <button className="btn btn-ghost" onClick={() => nav('/report/new')}>Report another issue</button>
+        {r.status !== 'fixed' && <Mascot mood="focused">{t('escalateTip')}</Mascot>}
+        {r.status !== 'fixed' && <button className="btn btn-secondary">{t('escalate')}</button>}
+        <button className="btn btn-ghost" onClick={() => nav('/report/new')}>{t('anotherIssue')}</button>
       </div>
     </Screen>
   )
@@ -110,6 +116,7 @@ export function ReportDetail() {
 
 export function CheckStatus() {
   const nav = useNavigate()
+  const t = useT()
   const { reports } = useStore()
   const [val, setVal] = useState('')
   const [err, setErr] = useState('')
@@ -118,16 +125,16 @@ export function CheckStatus() {
     const q = val.trim().toUpperCase()
     const hit = reports.find((r) => r.id.toUpperCase() === q || r.id.replace(/\D/g, '') === q.replace(/\D/g, ''))
     if (hit) nav(`/report/my/${hit.id}`)
-    else setErr('No complaint found with that number. Check and try again.')
+    else setErr(t('checkErr'))
   }
 
   return (
     <Screen>
-      <TopBar back title="Check status" />
+      <TopBar back title={t('checkTitle')} />
       <div className="content">
-        <Mascot q>Enter the complaint number you received.</Mascot>
+        <Mascot q>{t('enterQ')}</Mascot>
         <div className="field">
-          <label className="label" htmlFor="cno">Complaint number</label>
+          <label className="label" htmlFor="cno">{t('cno')}</label>
           <input
             id="cno"
             className="input"
@@ -139,9 +146,9 @@ export function CheckStatus() {
             autoCapitalize="characters"
           />
           {err && <span className="small" style={{ color: '#b4430b' }}>{err}</span>}
-          <span className="small">Try <b>4821</b> to see a sample report.</span>
+          <span className="small">{t('trySample', { n: '4821' })}</span>
         </div>
-        <button className="btn btn-primary" disabled={!val.trim()} onClick={go}><Ic.Search /> Check</button>
+        <button className="btn btn-primary" disabled={!val.trim()} onClick={go}><Ic.Search /> {t('check')}</button>
       </div>
     </Screen>
   )

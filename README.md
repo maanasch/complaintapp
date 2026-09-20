@@ -1,4 +1,4 @@
-# MyBMC · Report (prototype)
+# Aaple BMC (prototype)
 
 Low/mid-fidelity prototype of a citizen complaint-filing app that acts as a new input
 channel into BMC's existing complaint redressal backend. Frontend only, no persistence.
@@ -11,7 +11,9 @@ channel into BMC's existing complaint redressal backend. Frontend only, no persi
   (Photo → What → Where → Review → Complaint number)
 - Around Me → nearby issues with before/after
 
-**Stack:** React + Vite, React Router, Anek Latin / Anek Devanagari. Deploys to Vercel as-is.
+**Languages:** English, Hindi, Marathi — toggle on every screen (persisted in localStorage).
+
+**Stack:** React + Vite, React Router, Anek Latin / Anek Devanagari. Mascot and logo are vector stand-ins in `src/brand.jsx`. Deploys to Vercel as-is.
 
 ```bash
 npm install

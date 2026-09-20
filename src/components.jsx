@@ -1,9 +1,31 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import * as Ic from './icons.jsx'
-import { STATUS, catById } from './data.js'
+import { catById } from './data.js'
+import { Logo, MascotHead } from './brand.jsx'
+import { LANGS, useLang } from './i18n.jsx'
 
 export function Screen({ tabs = true, children, className = '' }) {
   return <div className={`screen fade-in ${tabs ? 'with-tabs' : ''} ${className}`}>{children}</div>
+}
+
+/* EN / हिं / मरा segmented toggle, present on every screen */
+export function LangToggle() {
+  const { lang, setLang } = useLang()
+  return (
+    <div className="lang" role="group" aria-label="Language">
+      {LANGS.map((l) => (
+        <button
+          key={l.id}
+          className={`lang-btn ${l.id === lang ? 'active' : ''} ${l.id !== 'en' ? 'dev' : ''}`}
+          onClick={() => setLang(l.id)}
+          aria-pressed={l.id === lang}
+          title={l.name}
+        >
+          {l.label}
+        </button>
+      ))}
+    </div>
+  )
 }
 
 export function TopBar({ title, back, right, brand = false, onBack }) {
@@ -14,19 +36,23 @@ export function TopBar({ title, back, right, brand = false, onBack }) {
       {back ? (
         <button className="iconbtn" onClick={goBack} aria-label="Back"><Ic.Back /></button>
       ) : brand ? (
-        <span className="brand">MyBMC</span>
+        <Logo size={22} />
       ) : <span className="spacer" />}
       {title && <span className="title">{title}</span>}
-      {right ?? <span className="spacer" />}
+      <span className="topbar-right">
+        {right}
+        <LangToggle />
+      </span>
     </header>
   )
 }
 
 export function TabBar() {
+  const { t } = useLang()
   const tabs = [
-    { to: '/', label: 'Home', icon: Ic.Home, end: true },
-    { to: '/report', label: 'Report', icon: Ic.Report },
-    { to: '/around', label: 'Around Me', icon: Ic.Around },
+    { to: '/', label: t('tabHome'), icon: Ic.Home, end: true },
+    { to: '/report', label: t('tabReport'), icon: Ic.Report },
+    { to: '/around', label: t('tabAround'), icon: Ic.Around },
   ]
   return (
     <nav className="tabbar">
@@ -50,10 +76,11 @@ export function Option({ icon: Icon, title, sub, onClick, tone = '', selected, c
   )
 }
 
-export function Mascot({ size, children, q }) {
+/* Mascot head + speech bubble */
+export function Mascot({ size, children, q, mood = 'friendly' }) {
   return (
     <div className="mascot-row">
-      <div className={`mascot ${size === 'lg' ? 'lg' : ''}`}><Ic.MascotFace /></div>
+      <div className={`mascot ${size === 'lg' ? 'lg' : ''}`}><MascotHead mood={mood} size={size === 'lg' ? 84 : 56} /></div>
       {children && <div className={`bubble ${q ? 'q' : ''}`}>{children}</div>}
     </div>
   )
@@ -67,9 +94,10 @@ export function Steps({ step, total = 4 }) {
   )
 }
 
+const STATUS_KEY = { submitted: 'submitted', progress: 'inProgress', fixed: 'fixed' }
 export function Pill({ status }) {
-  const s = STATUS[status]
-  return <span className={`pill ${s.cls}`}>{s.label}</span>
+  const { t } = useLang()
+  return <span className={`pill ${status}`}>{t(STATUS_KEY[status])}</span>
 }
 
 export function ReportRow({ r, onClick, right }) {
