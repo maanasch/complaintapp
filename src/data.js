@@ -36,6 +36,7 @@ export const MY_REPORTS = [
     location: 'Rampart Row, Kala Ghoda',
     ward: 'A Ward',
     status: 'progress',
+    photo: '/mine/footpath.jpg',
     reported: '12 Sep 2026, 8:40 am',
     updated: '15 Sep 2026',
     timeline: [
@@ -53,6 +54,7 @@ export const MY_REPORTS = [
     location: 'MG Road, Fort',
     ward: 'A Ward',
     status: 'progress',
+    photo: '/mine/streetlight.jpg',
     reported: '8 Sep 2026, 7:05 pm',
     updated: '10 Sep 2026',
     timeline: [
@@ -70,6 +72,7 @@ export const MY_REPORTS = [
     location: 'Colaba Causeway',
     ward: 'A Ward',
     status: 'fixed',
+    photo: '/mine/garbage.jpg',
     reported: '2 Sep 2026, 9:20 am',
     updated: '4 Sep 2026',
     timeline: [

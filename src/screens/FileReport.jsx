@@ -258,8 +258,8 @@ export function StepReview() {
         <Steps step={4} />
         <Mascot q>{t('readyQ')}</Mascot>
 
-        <div className="card" style={{ display: 'flex', gap: 14 }}>
-          <div style={{ flex: 1 }}>
+        <div className="card" style={{ display: 'flex', gap: 8, padding: 8 }}>
+          <div style={{ flex: 1, padding: 12 }}>
             <dl className="kv" style={{ gridTemplateColumns: '64px 1fr' }}>
               <dt>{t('what')}</dt><dd>{t(cat.key)}{draft.description ? <span className="small" style={{ display: 'block', fontWeight: 400 }}>{draft.description}</span> : null}</dd>
               <dt>{t('where')}</dt><dd>{draft.location?.label || '—'}</dd>
@@ -269,7 +269,7 @@ export function StepReview() {
               <Ic.Edit width={16} height={16} /> {t('edit')}
             </button>
           </div>
-          <div style={{ width: 96, height: 120, borderRadius: 'var(--r-sm)', overflow: 'hidden', background: 'var(--sand)', flex: 'none', display: 'grid', placeItems: 'center', color: 'var(--grey)' }}>
+          <div style={{ width: 104, alignSelf: 'stretch', minHeight: 136, borderRadius: 'calc(var(--r-lg) - 8px)', overflow: 'hidden', background: 'var(--sand)', flex: 'none', display: 'grid', placeItems: 'center', color: 'var(--grey)' }}>
             {draft.photo ? <img src={draft.photo} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Ic.Camera />}
           </div>
         </div>

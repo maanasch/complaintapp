@@ -115,7 +115,7 @@ export function ReportDetail() {
             <p className="small center">{t('escalatedOn', { t: r.escalatedAt })}</p>
           ) : (
             <>
-              <Mascot mood="focused">{t('escalateTip')}</Mascot>
+              <Mascot mood="sad">{t('escalateTip')}</Mascot>
               <button className="btn btn-secondary" onClick={() => nav(`/report/my/${r.id}/escalate`)}>{t('escalate')}</button>
             </>
           )
@@ -161,7 +161,7 @@ export function EscalateComplaint() {
     <Screen tabs={false}>
       <TopBar back={`/report/my/${r.id}`} title={t('escalate')} />
       <div className="content grow">
-        <Mascot q>{t('escalateConfirmQ')}</Mascot>
+        <Mascot q mood="sad">{t('escalateConfirmQ')}</Mascot>
         <p className="sub">{t('escalateConfirmNote')}</p>
         <div className="stack mt-auto">
           <button className="btn btn-secondary" onClick={confirm}>{t('escalateYes')}</button>

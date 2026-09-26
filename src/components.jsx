@@ -77,7 +77,7 @@ export function Option({ icon: Icon, title, sub, onClick, tone = '', selected, c
 }
 
 /* Mascot head + speech bubble */
-export function Mascot({ size, children, q, mood = 'friendly' }) {
+export function Mascot({ size, children, q, mood = 'happy' }) {
   return (
     <div className="mascot-row">
       <div className={`mascot ${size === 'lg' ? 'lg' : ''}`}><MascotHead mood={mood} size={size === 'lg' ? 84 : 56} /></div>

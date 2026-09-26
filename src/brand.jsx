@@ -20,28 +20,25 @@ export const Sparks = ({ size = 22, style }) => (
 )
 
 /*
-  Mascot head — the Kali-Peeli taxi character.
-  mood: 'friendly' | 'happy' | 'focused' | 'wink'
+  Mascot head. mood 'sad' is for unresolved or escalated problems; everything else uses the happy face.
 */
-export function MascotHead({ mood = 'friendly', size = 48, style, ...rest }) {
+export function MascotHead({ mood = 'happy', size = 48, style, ...rest }) {
   return (
-    <svg viewBox="0 0 64 64" width={size} height={size} style={style} aria-hidden {...rest}>
-      {/* roof sign */}
-      <rect x="21" y="2" width="22" height="10" rx="3" fill={Y} />
-      <text x="32" y="10" textAnchor="middle" fontSize="6.5" fontWeight="800" fontFamily="Anek Latin, sans-serif" fill={K}>BMC</text>
-      {/* black head */}
-      <rect x="6" y="10" width="52" height="52" rx="22" fill={K} />
-      {/* yellow roof */}
-      <path d="M8 30c0-12 8-20 24-20s24 8 24 20v2H8z" fill={Y} />
-      {/* yellow side pillars */}
-      <rect x="8" y="26" width="7" height="22" rx="3.5" fill={Y} />
-      <rect x="49" y="26" width="7" height="22" rx="3.5" fill={Y} />
-      {/* face screen */}
-      <rect x="15" y="20" width="34" height="32" rx="10" fill={C} />
-      <Face mood={mood} />
-    </svg>
+    <img
+      src={mood === 'sad' ? '/mascot/sad.png' : '/mascot/happy.png'}
+      alt=""
+      width={size}
+      height={size}
+      style={{ objectFit: 'contain', ...style }}
+      {...rest}
+    />
   )
 }
+
+/* Full-body illustration used on the Home hero */
+export const MascotIllustration = ({ width = 104, style }) => (
+  <img src="/mascot/full.png" alt="" width={width} height={Math.round(width * 370 / 312)} style={style} />
+)
 
 function Face({ mood }) {
   if (mood === 'happy') {
