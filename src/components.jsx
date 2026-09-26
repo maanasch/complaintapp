@@ -100,6 +100,18 @@ export function Pill({ status }) {
   return <span className={`pill ${status}`}>{t(STATUS_KEY[status])}</span>
 }
 
+/* Compact 4-dot version of the complaint timeline, for list rows */
+export function MiniProgress({ timeline, status }) {
+  const doneIdx = timeline.reduce((acc, s, i) => (s.t ? i : acc), -1)
+  return (
+    <span className="mini-steps" aria-hidden>
+      {timeline.map((s, i) => (
+        <i key={i} className={i < doneIdx ? 'done' : i === doneIdx && status !== 'fixed' ? 'now' : i <= doneIdx ? 'done' : ''} />
+      ))}
+    </span>
+  )
+}
+
 export function ReportRow({ r, onClick, right }) {
   const cat = catById(r.category)
   const Icon = cat.icon
@@ -109,7 +121,11 @@ export function ReportRow({ r, onClick, right }) {
       <span className="txt">
         <b>{r.title}</b>
         <span className="small">{r.location}{r.dist ? ` · ${r.dist}` : ''}</span>
-        <span className="meta"><Pill status={r.status} />{right && <span className="small">{right}</span>}</span>
+        <span className="meta">
+          <Pill status={r.status} />
+          {r.timeline && <MiniProgress timeline={r.timeline} status={r.status} />}
+          {right && <span className="small">{right}</span>}
+        </span>
       </span>
       <span className="chev"><Ic.Chevron /></span>
     </button>

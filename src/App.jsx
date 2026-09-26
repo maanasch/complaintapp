@@ -4,14 +4,14 @@ import { LangProvider } from './i18n.jsx'
 import { TabBar } from './components.jsx'
 import Home from './screens/Home.jsx'
 import ReportHub from './screens/ReportHub.jsx'
-import { MyReports, ReportDetail, CheckStatus } from './screens/MyReports.jsx'
+import { MyReports, ReportDetail, EscalateComplaint, CheckStatus } from './screens/MyReports.jsx'
 import { AroundMe, AroundDetail } from './screens/Around.jsx'
-import { FileStart, StepPhoto, StepWhat, StepWhere, StepReview, StepDone } from './screens/FileReport.jsx'
-import SayIt from './screens/SayIt.jsx'
+import { StepPhoto, StepWhat, StepWhere, StepReview, StepDone } from './screens/FileReport.jsx'
 import OtherWays from './screens/OtherWays.jsx'
 
-// Tab bar is hidden inside the step-by-step filing flow so the CTA stays in reach
-const HIDE_TABS = /^\/report\/new\/(say|photo|what|where|review|done)/
+// Tab bar is hidden inside the step-by-step filing flow and the escalation flow
+// so the primary CTA in each stays reachable and isn't covered by the tab bar
+const HIDE_TABS = /^\/report\/new\/(photo|what|where|review|done)|^\/report\/my\/[^/]+\/escalate$/
 
 export default function App() {
   const { pathname } = useLocation()
@@ -28,10 +28,10 @@ export default function App() {
             <Route path="/report" element={<ReportHub />} />
             <Route path="/report/my" element={<MyReports />} />
             <Route path="/report/my/:id" element={<ReportDetail />} />
+            <Route path="/report/my/:id/escalate" element={<EscalateComplaint />} />
             <Route path="/report/check" element={<CheckStatus />} />
 
-            <Route path="/report/new" element={<FileStart />} />
-            <Route path="/report/new/say" element={<SayIt />} />
+            <Route path="/report/new" element={<Navigate to="/report/new/photo" replace />} />
             <Route path="/report/new/photo" element={<StepPhoto />} />
             <Route path="/report/new/what" element={<StepWhat />} />
             <Route path="/report/new/where" element={<StepWhere />} />

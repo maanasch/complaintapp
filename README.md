@@ -1,4 +1,4 @@
-# Aaple BMC (prototype)
+# Aapli BMC (prototype)
 
 Low/mid-fidelity prototype of a citizen complaint-filing app that acts as a new input
 channel into BMC's existing complaint redressal backend. Frontend only, no persistence.
@@ -7,8 +7,7 @@ channel into BMC's existing complaint redressal backend. Frontend only, no persi
 
 - Home → category shortcuts, open reports, around-you summary
 - Report → My reports / File a report / Check a complaint number
-- File a report → **Say it** (scripted assistant, mic + quick replies) or **Type it**
-  (Photo → What → Where → Review → Complaint number)
+- File a report → one track: Photo → What (with an optional voice note) → Where → Review → Complaint number
 - Around Me → nearby issues with before/after
 
 **Languages:** English, Hindi, Marathi — toggle on every screen (persisted in localStorage).

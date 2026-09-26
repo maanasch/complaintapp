@@ -1,5 +1,5 @@
 /*
-  Vector interpretations of the Aaple BMC brand assets (mascot + logo mark).
+  Vector interpretations of the Aapli BMC brand assets (mascot + logo mark).
   Drawn from the brand sheet so they scale and recolour; swap for the final
   illustrations when available.
 */
@@ -151,13 +151,13 @@ export function LogoMark({ size = 32, style }) {
   )
 }
 
-/* Full logo: mark + "Aaple BMC" wordmark with orange underline */
+/* Full logo: mark + "Aapli BMC" wordmark with orange underline */
 export function Logo({ size = 28 }) {
   return (
     <span className="logo" style={{ '--logo-size': `${size}px` }}>
       <LogoMark size={size * 1.25} />
       <span className="wordmark">
-        <span className="aaple">Aaple</span><span className="bmc">BMC</span>
+        <span className="aapli">Aapli</span><span className="bmc">BMC</span>
         <i />
       </span>
     </span>

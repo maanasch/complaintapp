@@ -94,9 +94,9 @@ export const AROUND = [
 export const AROUND_STATS = { fixed: 8, open: 5 }
 
 export const OTHER_WAYS = [
-  { icon: Ic.Phone, titleKey: 'call1916', subKey: 'tollFree' },
-  { icon: Ic.Chat, title: 'WhatsApp', sub: '+91 89999 28999' },
-  { icon: Ic.Globe, titleKey: 'website', sub: 'portal.mcgm.gov.in' },
+  { icon: Ic.Phone, titleKey: 'call1916', subKey: 'tollFree', href: 'tel:1916' },
+  { icon: Ic.Chat, title: 'WhatsApp', sub: '+91 89999 28999', href: 'https://wa.me/918999928999' },
+  { icon: Ic.Globe, titleKey: 'website', sub: 'portal.mcgm.gov.in', href: 'https://portal.mcgm.gov.in' },
 ]
 
 export function newComplaintId() {
