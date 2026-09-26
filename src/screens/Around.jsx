@@ -74,11 +74,11 @@ export function AroundDetail() {
 
         <div className="ba">
           <div className="shot">
-            <div className="img"><Icon width={36} height={36} style={{ color: 'var(--grey)' }} /></div>
+            <div className="img">{a.photo ? <img src={a.photo} alt="" /> : <Icon width={36} height={36} style={{ color: 'var(--grey)' }} />}</div>
             <div className="band orange">{t('before')} · {a.before}</div>
           </div>
           <div className="shot">
-            <div className="img">{fixed ? <Ic.Check width={36} height={36} style={{ color: 'var(--green)' }} /> : <span>{t('pending')}</span>}</div>
+            <div className="img">{fixed ? (a.afterPhoto ? <img src={a.afterPhoto} alt="" /> : <Ic.Check width={36} height={36} style={{ color: 'var(--green)' }} />) : <span>{t('pending')}</span>}</div>
             <div className={`band ${fixed ? 'green' : ''}`} style={!fixed ? { background: 'var(--line-strong)', color: 'var(--grey)' } : {}}>
               {t('after')}{fixed ? ` · ${a.after}` : ''}
             </div>
