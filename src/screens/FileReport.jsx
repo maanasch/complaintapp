@@ -266,7 +266,7 @@ export function StepReview() {
               <Ic.Edit width={16} height={16} /> {t('edit')}
             </button>
           </div>
-          <div style={{ width: 96, height: 120, borderRadius: 14, overflow: 'hidden', background: 'var(--sand)', flex: 'none', display: 'grid', placeItems: 'center', color: 'var(--grey)' }}>
+          <div style={{ width: 96, height: 120, borderRadius: 'var(--r-sm)', overflow: 'hidden', background: 'var(--sand)', flex: 'none', display: 'grid', placeItems: 'center', color: 'var(--grey)' }}>
             {draft.photo ? <img src={draft.photo} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Ic.Camera />}
           </div>
         </div>

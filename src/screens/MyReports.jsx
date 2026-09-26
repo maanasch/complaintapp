@@ -37,7 +37,7 @@ export function MyReports() {
           {shown.map((r) => (
             <ReportRow key={r.id} r={r} right={r.id} onClick={() => nav(`/report/my/${r.id}`)} />
           ))}
-          {shown.length === 0 && <p className="sub center" style={{ padding: 30 }}>{t('nothingYet')}</p>}
+          {shown.length === 0 && <p className="sub center" style={{ padding: 32 }}>{t('nothingYet')}</p>}
         </div>
 
         <button className="option" onClick={() => nav('/report/check')}>
@@ -75,7 +75,7 @@ export function ReportDetail() {
               <Icon width={40} height={40} />
             </div>
           )}
-          <div style={{ padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
               <span className="eyebrow">{r.id}</span>
               <Pill status={r.status} />
@@ -101,7 +101,7 @@ export function ReportDetail() {
                 <div key={i} className={`tl ${i < doneIdx ? 'done' : isNow ? 'now' : ''}`}>
                   <div className="dot"><i /></div>
                   <div className="body">
-                    <b>{s.title}{isNow && <span className="here-badge">{t('youAreHere')}</span>}</b>
+                    <b>{s.title}</b>
                     <span>{s.t ? `${s.t}${s.note ? ' · ' + s.note : ''}` : s.note || t('pending')}</span>
                   </div>
                 </div>
