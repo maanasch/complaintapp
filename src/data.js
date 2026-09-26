@@ -83,7 +83,7 @@ export const MY_REPORTS = [
 
 // Issues near the user (Around Me)
 export const AROUND = [
-  { id: 'n1', category: 'streetlight', title: 'Streetlight not working', location: 'Kala Ghoda', status: 'fixed', dist: '120 m', before: '14 Sep', after: '17 Sep', reports: 4, photo: '/around/streetlight-before.jpg', afterPhoto: '/around/streetlight-after.jpg' },
+  { id: 'n1', category: 'streetlight', title: 'Streetlight not working', location: 'Kala Ghoda', status: 'progress', dist: '120 m', before: '14 Sep', after: null, reports: 4, photo: '/around/streetlight-before.jpg' },
   { id: 'n2', category: 'footpath', title: 'Broken footpath', location: 'MG Road', status: 'fixed', dist: '300 m', before: '12 Sep', after: '16 Sep', reports: 7, photo: '/around/footpath-before.jpg', afterPhoto: '/around/footpath-after.jpg' },
   { id: 'n3', category: 'garbage', title: 'Overflowing bin', location: 'Kala Ghoda', status: 'fixed', dist: '350 m', before: '10 Sep', after: '11 Sep', reports: 3, photo: '/around/garbage-before.jpg', afterPhoto: '/around/garbage-after.jpg' },
   { id: 'n4', category: 'pothole', title: 'Pothole near signal', location: 'Fort', status: 'progress', dist: '450 m', before: '15 Sep', after: null, reports: 11, photo: '/around/pothole-before.jpg' },
