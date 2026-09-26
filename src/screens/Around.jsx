@@ -90,7 +90,7 @@ export function AroundDetail() {
         {fixed ? (
           <Mascot mood="happy">{t('fixedIn', { d: daysBetween(a.before, a.after) })}</Mascot>
         ) : (
-          <Mascot mood="focused">{t('seeingToo')}</Mascot>
+          <Mascot mood="sad">{t('seeingToo')}</Mascot>
         )}
 
         {!fixed && (

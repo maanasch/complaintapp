@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { Screen, TopBar, ReportRow } from '../components.jsx'
-import { MascotFull } from '../brand.jsx'
+import { MascotIllustration } from '../brand.jsx'
 import * as Ic from '../icons.jsx'
 import { AROUND, AROUND_STATS } from '../data.js'
 import { useStore } from '../store.jsx'
@@ -24,12 +24,12 @@ export default function Home() {
             <h1 className="h1">{t('homeTitle')}</h1>
             <p style={{ color: 'rgba(255,255,255,.8)', fontSize: 15 }}>{t('homeSub')}</p>
           </div>
-          <div className="hero-mascot"><MascotFull pose="phone" size={104} /></div>
+          <div className="hero-mascot"><MascotIllustration width={104} /></div>
           <button className="btn" onClick={() => { reset(); nav('/report/new') }}>
-            <Ic.Plus /> {t('fileReport')}
+            <Ic.Edit /> {t('fileViaForm')}
           </button>
-          <button className="alt-link" onClick={() => nav('/report/new/chat')}>
-            <Ic.Chat /> {t('fileViaChat')}
+          <button className="btn btn-chat" onClick={() => nav('/report/new/chat')}>
+            <Ic.Chat /> {t('fileViaChatBtn')}
           </button>
         </section>
 

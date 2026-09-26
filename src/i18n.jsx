@@ -20,6 +20,8 @@ const S = {
   myReports: ['My reports', 'मेरी शिकायतें', 'माझ्या तक्रारी'],
   checkNumber: ['Check a complaint number', 'शिकायत नंबर जांचें', 'तक्रार क्रमांक तपासा'],
   reportIt: ['Report it', 'शिकायत भेजें', 'तक्रार पाठवा'],
+  fileViaForm: ['File report via form', 'फॉर्म से शिकायत करें', 'फॉर्मद्वारे तक्रार करा'],
+  fileViaChatBtn: ['File report via chat', 'चैट से शिकायत करें', 'चॅटवरून तक्रार करा'],
   edit: ['Edit', 'बदलें', 'बदला'],
   what: ['What', 'क्या', 'काय'],
   where: ['Where', 'कहां', 'कुठे'],

@@ -22,13 +22,13 @@ export default function ReportHub() {
 
         <Option
           icon={Ic.Plus}
-          title={t('fileReport')}
+          title={t('fileViaForm')}
           sub={t('hubFileSub')}
           onClick={() => { reset(); nav('/report/new') }}
         />
         <Option
           icon={Ic.Chat}
-          title={t('fileViaChat')}
+          title={t('fileViaChatBtn')}
           sub={t('fileViaChatSub')}
           tone="orange"
           onClick={() => nav('/report/new/chat')}

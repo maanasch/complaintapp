@@ -355,20 +355,23 @@ h1, h2, h3, p { margin: 0; }
 .list { display: flex; flex-direction: column; gap: 10px; }
 .row {
   display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
-  background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-md); padding: 8px 12px 8px 8px;
+  --row-r: var(--r-md); --row-pad: 8px;
+  align-items: stretch;
+  background: var(--paper); border: 1px solid var(--line); border-radius: var(--row-r); padding: var(--row-pad) 12px var(--row-pad) var(--row-pad);
 }
 .row:active { background: var(--sand); }
 .row .thumb {
-  flex: none; width: 56px; height: 56px; border-radius: var(--r-xs); overflow: hidden;
+  flex: none; align-self: stretch; aspect-ratio: 1; min-height: 64px; border-radius: calc(var(--row-r) - var(--row-pad)); overflow: hidden;
   background: var(--sand); display: flex; align-items: center; justify-content: center; color: var(--blue);
 }
 .row .thumb svg { width: 26px; height: 26px; }
-.row .thumb img { width: 100%; height: 100%; object-fit: cover; }
-.row .txt { flex: 1; min-width: 0; }
+.row .thumb { position: relative; }
+.row .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.row .txt { flex: 1; min-width: 0; align-self: center; padding: 4px 0; }
 .row .txt b { display: block; font-size: 16px; font-weight: 700; }
 .row .txt .small { margin-top: 2px; }
 .row .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-.row .chev { color: var(--grey); }
+.row .chev { color: var(--grey); align-self: center; }
 .row .chev svg { width: 20px; height: 20px; }
 
 /* Summary table */
@@ -452,26 +455,28 @@ h1, h2, h3, p { margin: 0; }
   width: 100%; min-height: 48px; font-size: 16px; font-weight: 700; color: var(--blue);
 }
 .alt-link svg { width: 20px; height: 20px; }
-.hero .alt-link { color: #fff; min-height: 40px; margin-top: -4px; }
 
-/* Hero on home */
+/* Hero on home
+   Buttons sit 12px from the card edge, so their radius is the card's minus 12 (concentric corners). */
 .hero {
-  background: var(--navy); color: #fff; border-radius: var(--r-lg);
-  padding: 20px; display: flex; flex-direction: column; gap: 16px;
+  --hero-r: 36px; --hero-pad: 12px;
+  background: var(--navy); color: #fff; border-radius: var(--hero-r);
+  padding: var(--hero-pad); display: flex; flex-direction: column; gap: 8px;
   position: relative; overflow: hidden;
 }
 .hero > * { position: relative; z-index: 1; }
 .hero .h1 { color: #fff; font-size: 27px; }
 .hero .eyebrow { color: var(--yellow); }
+.hero .hero-text { max-width: 66%; display: flex; flex-direction: column; gap: 10px; padding: 12px 12px 16px; }
 .hero .btn {
-  background: var(--yellow); color: var(--ink);
-  min-height: 60px; font-size: 18px;
-  box-shadow: 0 10px 26px rgba(0,0,0,.35);
+  min-height: 56px; font-size: 17px;
+  border-radius: calc(var(--hero-r) - var(--hero-pad));
 }
-.hero .btn svg { width: 26px; height: 26px; }
-.hero .hero-text { max-width: 66%; display: flex; flex-direction: column; gap: 10px; }
-.hero .hero-mascot { position: absolute; right: 8px; bottom: 114px; z-index: 0; }
-.hero .hero-mascot svg { display: block; }
+.hero .btn svg { width: 22px; height: 22px; }
+.hero .btn:first-of-type { background: var(--yellow); color: var(--ink); box-shadow: 0 8px 20px rgba(0,0,0,.3); }
+.hero .btn-chat { background: var(--paper); color: var(--navy); box-shadow: 0 8px 20px rgba(0,0,0,.3); }
+.hero .hero-mascot { position: absolute; right: 20px; bottom: 114px; z-index: 0; }
+.hero .hero-mascot img { display: block; }
 
 .stat { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .stat .big { font-size: 34px; font-weight: 800; color: var(--green); line-height: 1; }
