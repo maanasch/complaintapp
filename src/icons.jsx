@@ -74,6 +74,9 @@ export const Plus = (p) => (
 export const Globe = (p) => (
   <I {...p}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></I>
 )
+export const Speaker = (p) => (
+  <I {...p}><path d="M4 9h4l5-4v14l-5-4H4z" /><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" /></I>
+)
 export const Chat = (p) => (
   <I {...p}><path d="M4 5h16v11H9l-5 4z" /></I>
 )

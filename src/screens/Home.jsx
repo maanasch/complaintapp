@@ -28,6 +28,9 @@ export default function Home() {
           <button className="btn" onClick={() => { reset(); nav('/report/new') }}>
             <Ic.Plus /> {t('fileReport')}
           </button>
+          <button className="alt-link" onClick={() => nav('/report/new/chat')}>
+            <Ic.Chat /> {t('fileViaChat')}
+          </button>
         </section>
 
         {open.length > 0 && (

@@ -27,6 +27,13 @@ export default function ReportHub() {
           onClick={() => { reset(); nav('/report/new') }}
         />
         <Option
+          icon={Ic.Chat}
+          title={t('fileViaChat')}
+          sub={t('fileViaChatSub')}
+          tone="orange"
+          onClick={() => nav('/report/new/chat')}
+        />
+        <Option
           icon={Ic.List}
           title={t('myReports')}
           sub={open ? `${open} ${t('inProgress').toLowerCase()} · ${reports.length} ${t('total')}` : `${reports.length} ${t('total')}`}
