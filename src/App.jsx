@@ -8,10 +8,11 @@ import { MyReports, ReportDetail, EscalateComplaint, CheckStatus } from './scree
 import { AroundMe, AroundDetail } from './screens/Around.jsx'
 import { StepPhoto, StepWhat, StepWhere, StepReview, StepDone } from './screens/FileReport.jsx'
 import OtherWays from './screens/OtherWays.jsx'
+import ChatReport from './screens/ChatReport.jsx'
 
 // Tab bar is hidden inside the step-by-step filing flow and the escalation flow
 // so the primary CTA in each stays reachable and isn't covered by the tab bar
-const HIDE_TABS = /^\/report\/new\/(photo|what|where|review|done)|^\/report\/my\/[^/]+\/escalate$/
+const HIDE_TABS = /^\/report\/new\/(chat|photo|what|where|review|done)|^\/report\/my\/[^/]+\/escalate$/
 
 export default function App() {
   const { pathname } = useLocation()
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/report/check" element={<CheckStatus />} />
 
             <Route path="/report/new" element={<Navigate to="/report/new/photo" replace />} />
+            <Route path="/report/new/chat" element={<ChatReport />} />
             <Route path="/report/new/photo" element={<StepPhoto />} />
             <Route path="/report/new/what" element={<StepWhat />} />
             <Route path="/report/new/where" element={<StepWhere />} />

@@ -72,6 +72,9 @@ export function StepPhoto() {
           {!draft.photo && (
             <button className="btn btn-ghost" onClick={() => nav('/report/new/what')}>{t('noPhoto')}</button>
           )}
+          <button className="alt-link" onClick={() => nav('/report/new/chat')}>
+            <Ic.Chat /> {t('fileViaChat')}
+          </button>
         </div>
       </div>
     </Screen>
