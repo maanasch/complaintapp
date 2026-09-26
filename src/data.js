@@ -41,7 +41,7 @@ export const MY_REPORTS = [
     updated: '15 Sep 2026',
     timeline: [
       { t: '12 Sep, 8:40 am', title: 'Complaint received', note: 'Sent to A Ward · Roads' },
-      { t: '13 Sep, 11:15 am', title: 'Assigned to engineer', note: 'Site inspection scheduled' },
+      { t: '13 Sep, 11:15 am', title: 'Assigned to supervisor', note: 'Site inspection scheduled' },
       { t: '15 Sep, 4:30 pm', title: 'Work in progress', note: 'Repair expected within 7 days' },
       { t: null, title: 'Fixed', note: 'You will be notified' },
     ],
@@ -59,7 +59,7 @@ export const MY_REPORTS = [
     updated: '10 Sep 2026',
     timeline: [
       { t: '8 Sep, 7:05 pm', title: 'Complaint received', note: 'Sent to A Ward · Electrical' },
-      { t: '10 Sep, 10:00 am', title: 'Assigned to engineer', note: 'Cable fault suspected' },
+      { t: '10 Sep, 10:00 am', title: 'Assigned to supervisor', note: 'Cable fault suspected' },
       { t: null, title: 'Work in progress', note: '' },
       { t: null, title: 'Fixed', note: '' },
     ],
