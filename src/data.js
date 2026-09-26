@@ -90,8 +90,8 @@ export const AROUND = [
   { id: 'n2', category: 'footpath', title: 'Broken footpath', location: 'MG Road', status: 'fixed', dist: '300 m', before: '12 Sep', after: '16 Sep', reports: 7, photo: '/around/footpath-before.jpg', afterPhoto: '/around/footpath-after.jpg' },
   { id: 'n3', category: 'garbage', title: 'Overflowing bin', location: 'Kala Ghoda', status: 'fixed', dist: '350 m', before: '10 Sep', after: '11 Sep', reports: 3, photo: '/around/garbage-before.jpg', afterPhoto: '/around/garbage-after.jpg' },
   { id: 'n4', category: 'pothole', title: 'Pothole near signal', location: 'Fort', status: 'progress', dist: '450 m', before: '15 Sep', after: null, reports: 11, photo: '/around/pothole-before.jpg' },
-  { id: 'n5', category: 'water', title: 'Water leaking from pipe', location: 'Colaba Causeway', status: 'submitted', dist: '600 m', before: '18 Sep', after: null, reports: 2 },
-  { id: 'n6', category: 'pothole', title: 'Road surface damaged', location: 'Fort', status: 'fixed', dist: '700 m', before: '1 Sep', after: '9 Sep', reports: 15 },
+  { id: 'n5', category: 'water', title: 'Water leaking from pipe', location: 'Colaba Causeway', status: 'submitted', dist: '600 m', before: '18 Sep', after: null, reports: 2, photo: '/around/pipe-before.jpg' },
+  { id: 'n6', category: 'pothole', title: 'Road surface damaged', location: 'Fort', status: 'fixed', dist: '700 m', before: '1 Sep', after: '9 Sep', reports: 15, photo: '/around/road-before.jpg', afterPhoto: '/around/road-after.jpg' },
 ]
 
 export const AROUND_STATS = { fixed: 8, open: 5 }

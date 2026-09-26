@@ -354,24 +354,27 @@ h1, h2, h3, p { margin: 0; }
 /* Lists */
 .list { display: flex; flex-direction: column; gap: 10px; }
 .row {
-  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+  /* Thumbnail sets the row height; text is clamped to single lines so it never exceeds it,
+     keeping an even inset on all four sides. Thumb radius = row radius - inset (concentric). */
   --row-r: var(--r-md); --row-pad: 8px;
-  align-items: stretch;
-  background: var(--paper); border: 1px solid var(--line); border-radius: var(--row-r); padding: var(--row-pad) 12px var(--row-pad) var(--row-pad);
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  background: var(--paper); border: 1px solid var(--line); border-radius: var(--row-r);
+  padding: var(--row-pad) 8px var(--row-pad) var(--row-pad);
 }
 .row:active { background: var(--sand); }
 .row .thumb {
-  flex: none; align-self: stretch; aspect-ratio: 1; min-height: 64px; border-radius: calc(var(--row-r) - var(--row-pad)); overflow: hidden;
+  position: relative; flex: none; width: 84px; height: 84px;
+  border-radius: calc(var(--row-r) - var(--row-pad)); overflow: hidden;
   background: var(--sand); display: flex; align-items: center; justify-content: center; color: var(--blue);
 }
-.row .thumb svg { width: 26px; height: 26px; }
-.row .thumb { position: relative; }
+.row .thumb svg { width: 28px; height: 28px; }
 .row .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.row .txt { flex: 1; min-width: 0; align-self: center; padding: 4px 0; }
+.row .txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.row .txt .meta { margin: 2px 0; }
+.row .txt > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .row .txt b { display: block; font-size: 16px; font-weight: 700; }
-.row .txt .small { margin-top: 2px; }
-.row .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-.row .chev { color: var(--grey); align-self: center; }
+.row .meta { display: flex; align-items: center; gap: 8px; }
+.row .chev { color: var(--grey); flex: none; }
 .row .chev svg { width: 20px; height: 20px; }
 
 /* Summary table */
@@ -448,6 +451,22 @@ h1, h2, h3, p { margin: 0; }
 .mic.listening { background: var(--orange); animation: micpulse 1s infinite; }
 @keyframes micpulse { 0%,100% { box-shadow: 0 0 0 0 rgba(254,117,52,.5) } 50% { box-shadow: 0 0 0 12px rgba(254,117,52,0) } }
 .iconbtn.on { color: var(--blue); background: var(--blue-soft); }
+
+/* Chat: problem-type carousel and the chosen-type label */
+.type-carousel {
+  display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 0 16px 12px; scroll-padding-inline: 16px; scrollbar-width: none;
+}
+.type-carousel::-webkit-scrollbar { display: none; }
+.type-carousel .cat { flex: none; width: 88px; aspect-ratio: 1; justify-content: center; padding: 8px; scroll-snap-align: start; }
+.type-label-row { padding: 0 16px 8px; }
+.type-label {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 14px 0 10px;
+  border-radius: var(--r-pill); background: var(--blue-soft); color: var(--blue);
+  font-size: 15px; font-weight: 700; line-height: 1;
+}
+.type-label svg { width: 18px; height: 18px; }
+.type-label .change { font-weight: 600; color: var(--grey); padding-left: 8px; border-left: 1px solid var(--line-strong); }
 
 /* Secondary "file via chat" link */
 .alt-link {

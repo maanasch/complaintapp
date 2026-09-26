@@ -124,8 +124,8 @@ export function ReportRow({ r, onClick, right }) {
         <span className="meta">
           <Pill status={r.status} />
           {r.timeline && <MiniProgress timeline={r.timeline} status={r.status} />}
-          {right && <span className="small">{right}</span>}
         </span>
+        {right && <span className="small">{right}</span>}
       </span>
       <span className="chev"><Ic.Chevron /></span>
     </button>

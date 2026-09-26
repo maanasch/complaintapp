@@ -53,6 +53,7 @@ export default function ChatReport() {
   const [listening, setListening] = useState(false)
   const [voiceOn, setVoiceOn] = useState(false)
   const [filed, setFiled] = useState(null)
+  const [pickerOpen, setPickerOpen] = useState(true)
   const endRef = useRef(null)
   const recRef = useRef(null)
   const voiceRef = useRef(false)
@@ -103,32 +104,39 @@ export default function ChatReport() {
   })
 
   /* ---- conversation steps ---- */
+  const ACK = { pothole: 'ackPothole', garbage: 'ackGarbage', streetlight: 'ackStreetlight', footpath: 'ackFootpath', water: 'ackWater', other: 'ackOther' }
+
   const handleProblem = async (v) => {
     mine(v)
-    const cat = detectCategory(v)
     update({ description: v })
+    const cat = draft.category || detectCategory(v)
     if (cat) {
       update({ category: cat })
-      await say(t('botSoundsLike', { cat: t(catById(cat).key) }))
-      setStage('confirm')
+      setPickerOpen(false)
+      await say(t(ACK[cat]))
+      askPhoto()
     } else {
       await say(t('botWhichBest'))
+      setPickerOpen(true)
       setStage('pick')
     }
   }
 
-  const confirmYes = () => { mine(t('yesRight')); askPhoto() }
-  const confirmNo = async () => {
-    mine(t('noElse'))
-    await say(t('botPickClosest'))
-    setStage('pick')
+  // Category tile tapped. At the start it just sets the label; when the bot asked for it, it answers the question.
+  const chooseType = async (id) => {
+    update({ category: id })
+    setPickerOpen(false)
+    if (stage === 'pick') {
+      mine(t(catById(id).key))
+      await say(t(ACK[id]))
+      askPhoto()
+    }
   }
-  const pick = (id) => { update({ category: id }); mine(t(catById(id).key)); askPhoto() }
   const handlePick = async (v) => {
     const cat = detectCategory(v)
-    if (cat) { update({ category: cat }); mine(v); askPhoto(); return }
     mine(v)
-    await say(t('botPickClosest'))
+    if (cat) { chooseType(cat); return }
+    await say(t('botWhichBest'))
   }
 
   const askPhoto = async () => {
@@ -173,6 +181,7 @@ export default function ChatReport() {
   const startOver = async () => {
     mine(t('startOver'))
     reset()
+    setPickerOpen(true)
     await say(t('botStartOver'))
     setStage('problem')
   }
@@ -195,7 +204,6 @@ export default function ChatReport() {
     if (!v) return
     setText('')
     if (stage === 'problem') handleProblem(v)
-    else if (stage === 'confirm') { if (YES.test(v)) confirmYes(); else confirmNo() }
     else if (stage === 'pick') handlePick(v)
     else if (stage === 'where') { if (LOC.test(v)) detectLocation(); else handleAddress(v) }
     else if (stage === 'address') handleAddress(v)
@@ -229,7 +237,8 @@ export default function ChatReport() {
   }
 
   const cat = draft.category ? catById(draft.category) : null
-  const canTalk = ['problem', 'confirm', 'pick', 'where', 'address', 'review'].includes(stage)
+  const canTalk = ['problem', 'pick', 'where', 'address', 'review'].includes(stage)
+  const showPicker = pickerOpen && ['problem', 'pick', 'photo', 'where', 'address', 'review'].includes(stage) && !typing
 
   return (
     <Screen tabs={false} className="chat-screen">
@@ -272,22 +281,6 @@ export default function ChatReport() {
       {/* Quick replies */}
       {!typing && (
         <div className="quick">
-          {stage === 'problem' && (
-            <>
-              <button className="chip" onClick={() => send(t('quick1'))}>{t('quick1')}</button>
-              <button className="chip" onClick={() => send(t('quick2'))}>{t('quick2')}</button>
-              <button className="chip" onClick={() => send(t('quick3'))}>{t('quick3')}</button>
-            </>
-          )}
-          {stage === 'confirm' && (
-            <>
-              <button className="chip active" onClick={confirmYes}>{t('yesRight')}</button>
-              <button className="chip" onClick={confirmNo}>{t('noElse')}</button>
-            </>
-          )}
-          {stage === 'pick' && CATEGORIES.map((c) => (
-            <button key={c.id} className="chip" onClick={() => pick(c.id)}>{t(c.key)}</button>
-          ))}
           {stage === 'photo' && (
             <>
               <button className="chip active" onClick={openCamera}><Ic.Camera /> {t('takePhoto')}</button>
@@ -315,6 +308,26 @@ export default function ChatReport() {
         </div>
       )}
 
+      {showPicker && stage !== 'intro' && (
+        <div className="type-carousel" role="listbox" aria-label={t('whatQ')}>
+          {CATEGORIES.map((c) => {
+            const Icon = c.icon
+            return (
+              <button key={c.id} className={`cat ${draft.category === c.id ? 'selected' : ''}`} onClick={() => chooseType(c.id)}>
+                <span className="ico"><Icon /></span>
+                <span>{t(c.key)}</span>
+              </button>
+            )
+          })}
+        </div>
+      )}
+      {cat && !pickerOpen && !['sending', 'done'].includes(stage) && (
+        <div className="type-label-row">
+          <button className="type-label" onClick={() => setPickerOpen(true)}>
+            <cat.icon /> {t(cat.key)} <span className="change">{t('change')}</span>
+          </button>
+        </div>
+      )}
       {stage !== 'done' && (
         <div className="composer">
           <input
