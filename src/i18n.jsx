@@ -47,13 +47,11 @@ const S = {
   homeEyebrow: ['Report a problem', 'समस्या बताएं', 'समस्या सांगा'],
   homeTitle: ['See something broken? Tell BMC.', 'कुछ टूटा दिखा? BMC को बताएं।', 'काही बिघडलेलं दिसलं? BMC ला सांगा.'],
   homeSub: ['A photo and a location is enough. You get a complaint number to track it.', 'एक फोटो और जगह काफी है। ट्रैक करने के लिए शिकायत नंबर मिलेगा।', 'एक फोटो आणि ठिकाण पुरेसं आहे. ट्रॅक करण्यासाठी तक्रार क्रमांक मिळेल.'],
-  homeWhat: ['What do you want to report?', 'आप क्या रिपोर्ट करना चाहते हैं?', 'तुम्हाला काय नोंदवायचं आहे?'],
   homeOpen: ['Your open reports', 'आपकी चालू शिकायतें', 'तुमच्या चालू तक्रारी'],
   seeAll: ['See all', 'सभी देखें', 'सर्व पहा'],
   aroundYou: ['Around you', 'आपके आस-पास', 'तुमच्या जवळपास'],
   fixedThisWeek: ['{n} issues fixed this week', 'इस हफ्ते {n} समस्याएं ठीक हुईं', 'या आठवड्यात {n} समस्या दुरुस्त झाल्या'],
   stillOpen: ['{n} still in progress · See what changed', '{n} अभी प्रगति में · क्या बदला देखें', '{n} अजून प्रगतीत · काय बदललं ते पहा'],
-  homeTip: ['Not sure what to report or how? Tap File a report and choose Say it. I will ask you step by step.', 'क्या और कैसे रिपोर्ट करें, पक्का नहीं? "शिकायत दर्ज करें" दबाएं और "बोलकर बताएं" चुनें। मैं एक-एक करके पूछूंगा।', 'काय आणि कसं नोंदवायचं हे नक्की नाही? "तक्रार नोंदवा" दाबा आणि "बोलून सांगा" निवडा. मी एक एक करून विचारेन.'],
   otherWaysLink: ['Other ways to reach BMC →', 'BMC तक पहुंचने के अन्य तरीके →', 'BMC पर्यंत पोहोचण्याचे इतर मार्ग →'],
 
   // ---- report hub
@@ -162,8 +160,6 @@ const S = {
   listening: ['Listening…', 'सुन रहा हूं…', 'ऐकत आहे…'],
   cannedProblem: ['There is a big pothole on the road near the bus stop. Rickshaws keep swerving around it.', 'बस स्टॉप के पास सड़क पर बड़ा गड्ढा है। रिक्शा उसके चारों ओर घूमते हैं।', 'बस स्टॉपजवळ रस्त्यावर मोठा खड्डा आहे. रिक्षा त्याच्या बाजूने वळतात.'],
 
-  // ---- tracking
-  youAreHere: ['You are here', 'आप यहां हैं', 'तुम्ही इथे आहात'],
 }
 
 const IDX = { en: 0, hi: 1, mr: 2 }
