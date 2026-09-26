@@ -35,7 +35,7 @@ export function StoreProvider({ children }) {
       photo: draft.photo,
       timeline: [
         { t: 'Just now', title: 'Complaint received', note: `Sent to ${draft.location?.ward || 'A Ward'} · ${cat.dept}` },
-        { t: null, title: 'Assigned to engineer', note: '' },
+        { t: null, title: 'Assigned to supervisor', note: '' },
         { t: null, title: 'Work in progress', note: '' },
         { t: null, title: 'Fixed', note: '' },
       ],
