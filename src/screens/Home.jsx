@@ -13,7 +13,7 @@ export default function Home() {
 
   const startWith = (catId) => {
     reset()
-    update({ category: catId, via: 'type' })
+    update({ category: catId })
     nav('/report/new/photo')
   }
 

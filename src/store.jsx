@@ -7,7 +7,6 @@ const EMPTY_DRAFT = {
   category: null,
   description: '',
   location: null, // { label, address, lat, lng, ward }
-  via: 'type', // 'type' | 'say'
 }
 
 const Ctx = createContext(null)
@@ -47,9 +46,15 @@ export function StoreProvider({ children }) {
     return report
   }, [draft])
 
+  const escalate = useCallback((id) => {
+    setReports((rs) => rs.map((r) => (r.id === id && !r.escalated
+      ? { ...r, escalated: true, escalatedAt: nowStamp() }
+      : r)))
+  }, [])
+
   const value = useMemo(
-    () => ({ draft, update, reset, submit, reports, lastSubmitted }),
-    [draft, update, reset, submit, reports, lastSubmitted],
+    () => ({ draft, update, reset, submit, reports, lastSubmitted, escalate }),
+    [draft, update, reset, submit, reports, lastSubmitted, escalate],
   )
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }

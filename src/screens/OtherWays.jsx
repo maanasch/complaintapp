@@ -19,7 +19,7 @@ export default function OtherWays() {
             title={w.titleKey ? t(w.titleKey) : w.title}
             sub={w.subKey ? t(w.subKey) : w.sub}
             chevron={false}
-            onClick={() => {}}
+            onClick={() => window.open(w.href, w.href.startsWith('tel:') ? '_self' : '_blank', 'noopener,noreferrer')}
           />
         ))}
         <Mascot>{t('otherTip')}</Mascot>

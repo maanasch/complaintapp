@@ -5,36 +5,7 @@ import { MascotFull } from '../brand.jsx'
 import * as Ic from '../icons.jsx'
 import { CATEGORIES, MOCK_LOCATION, catById, nowStamp } from '../data.js'
 import { useStore } from '../store.jsx'
-import { useT } from '../i18n.jsx'
-
-/* ---------- Step 0: choose Say it / Type it ---------- */
-export function FileStart() {
-  const nav = useNavigate()
-  const t = useT()
-  const { update } = useStore()
-  return (
-    <Screen>
-      <TopBar back="/report" title={t('fileReport')} />
-      <div className="content">
-        <Mascot q>{t('startQ')}</Mascot>
-        <Option
-          icon={Ic.Mic}
-          title={t('sayIt')}
-          sub={t('saySub')}
-          tone="orange"
-          onClick={() => { update({ via: 'say' }); nav('/report/new/say') }}
-        />
-        <Option
-          icon={Ic.Keyboard}
-          title={t('typeIt')}
-          sub={t('typeSub')}
-          onClick={() => { update({ via: 'type' }); nav('/report/new/photo') }}
-        />
-        <p className="small center">{t('startNote')}</p>
-      </div>
-    </Screen>
-  )
-}
+import { useLang, useT } from '../i18n.jsx'
 
 /* ---------- Photo capture (shared) ---------- */
 export function usePhotoPicker(onPicked) {
@@ -67,7 +38,7 @@ export function StepPhoto() {
 
   return (
     <Screen tabs={false}>
-      <TopBar back="/report/new" title={t('stepTitle')} />
+      <TopBar back="/report" title={t('stepTitle')} />
       <div className="content grow">
         <Steps step={1} />
         <Mascot q>{t('photoQ')}</Mascot>
@@ -111,7 +82,31 @@ export function StepPhoto() {
 export function StepWhat() {
   const nav = useNavigate()
   const t = useT()
+  const { meta } = useLang()
   const { draft, update } = useStore()
+  const [listening, setListening] = useState(false)
+  const recRef = useRef(null)
+
+  const appendDescription = (v) => update({ description: `${draft.description} ${v}`.trim() })
+
+  const toggleVoiceNote = () => {
+    if (listening) { recRef.current?.stop?.(); setListening(false); return }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition
+    setListening(true)
+    if (SR) {
+      const rec = new SR()
+      recRef.current = rec
+      rec.lang = meta.speech
+      rec.interimResults = false
+      rec.onresult = (e) => { setListening(false); appendDescription(e.results[0][0].transcript) }
+      rec.onerror = () => setListening(false)
+      rec.onend = () => setListening(false)
+      try { rec.start() } catch { setListening(false) }
+    } else {
+      // No speech API on this device: simulate a captured voice note
+      setTimeout(() => { setListening(false); appendDescription(t('cannedProblem')) }, 1400)
+    }
+  }
 
   return (
     <Screen tabs={false}>
@@ -134,7 +129,7 @@ export function StepWhat() {
         </div>
 
         <div className="field">
-          <label className="label" htmlFor="desc">{t('extra')} <span className="small" style={{ fontWeight: 400 }}>{t('optional')}</span></label>
+          <label className="label" htmlFor="desc">{t('extra')} <span className="small required">{t('required')}</span></label>
           <textarea
             id="desc"
             className="textarea"
@@ -144,12 +139,12 @@ export function StepWhat() {
           />
         </div>
 
-        <button className="btn btn-ghost" onClick={() => { update({ via: 'say' }); nav('/report/new/say') }}>
-          <Ic.Mic /> {t('preferSay')}
+        <button className={`btn btn-ghost ${listening ? 'recording' : ''}`} onClick={toggleVoiceNote}>
+          <Ic.Mic /> {listening ? t('listening') : t('recordVoice')}
         </button>
 
         <div className="footer-cta mt-auto">
-          <button className="btn btn-primary" disabled={!draft.category} onClick={() => nav('/report/new/where')}>
+          <button className="btn btn-primary" disabled={!draft.category || !draft.description.trim()} onClick={() => nav('/report/new/where')}>
             {t('next')} <Ic.Chevron />
           </button>
         </div>
