@@ -11,6 +11,8 @@ const S = {
   // ---- common
   appName: ['Aapli BMC', 'आपली BMC', 'आपली BMC'],
   studentProject: ['Student Project', 'छात्र परियोजना', 'विद्यार्थी प्रकल्प'],
+  students: ['Students', 'छात्र', 'विद्यार्थी'],
+  faculty: ['Faculty', 'फैकल्टी', 'प्राध्यापक'],
   next: ['Next', 'आगे', 'पुढे'],
   or: ['or', 'या', 'किंवा'],
   all: ['All', 'सभी', 'सर्व'],

@@ -542,11 +542,13 @@ h1, h2, h3, p { margin: 0; }
 }
 .appfoot-logo { width: 46px; height: auto; flex: none; }
 .appfoot-text {
-  display: flex; flex-direction: column; gap: 3px;
-  text-align: right; min-width: 0; max-width: 240px;
+  display: flex; flex-direction: column; gap: 2px;
+  text-align: right; min-width: 0; flex: 1;
 }
 .appfoot-title { font-size: 13px; font-weight: 600; color: var(--ink); }
-.appfoot-copy { font-size: 12px; line-height: 1.4; color: var(--grey); }
+.appfoot-credit { font-size: 11.5px; line-height: 1.45; color: var(--grey); }
+.appfoot-credit b { color: var(--ink); font-weight: 600; }
+.appfoot-copy { font-size: 11px; line-height: 1.4; color: var(--grey); margin-top: 4px; }
 
 /* The screen itself only fades. Translating the whole screen pushes the
    footer past the device edge, where it gets clipped. */

@@ -14,6 +14,9 @@ export function Screen({ tabs = true, children, className = '' }) {
 }
 
 /* Institutional footer, shown at the bottom of every screen */
+const STUDENTS = ['Parisha Mehta', 'Maanas Chaudhari', 'Koutilya Karamala', 'Manan Gupta', 'Mansi']
+const FACULTY = ['Jitender Arora']
+
 export function AppFooter() {
   const { t } = useLang()
   return (
@@ -21,6 +24,8 @@ export function AppFooter() {
       <img className="appfoot-logo" src="/BITSlogo.svg" alt="BITS Design School" width="39" height="52" />
       <div className="appfoot-text">
         <span className="appfoot-title">{t('studentProject')}</span>
+        <span className="appfoot-credit"><b>{t('students')}:</b> {STUDENTS.join(' · ')}</span>
+        <span className="appfoot-credit"><b>{t('faculty')}:</b> {FACULTY.join(' · ')}</span>
         <span className="appfoot-copy">
           © BITS Design School, BITS Pilani Mumbai Campus. All Rights Reserved.
         </span>
