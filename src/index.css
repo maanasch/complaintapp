@@ -528,3 +528,27 @@ h1, h2, h3, p { margin: 0; }
 .msg .body { padding-top: calc(12px + var(--dv)); padding-bottom: calc(12px - var(--dv)); }
 .input, .textarea { padding-top: calc(14px + var(--dv)); padding-bottom: calc(14px - var(--dv)); }
 .composer .input { padding-bottom: 0; }
+
+/* ---------- Institutional footer (every screen) ---------- */
+.appfoot {
+  margin-top: auto;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--paper);
+}
+.appfoot-logo { width: 46px; height: auto; flex: none; }
+.appfoot-text {
+  display: flex; flex-direction: column; gap: 3px;
+  text-align: right; min-width: 0; max-width: 240px;
+}
+.appfoot-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+.appfoot-copy { font-size: 12px; line-height: 1.4; color: var(--grey); }
+
+/* The screen itself only fades. Translating the whole screen pushes the
+   footer past the device edge, where it gets clipped. */
+.screen.fade-in { animation-name: fade-only; }
+@keyframes fade-only { from { opacity: 0 } to { opacity: 1 } }

@@ -10,6 +10,7 @@ export const LANGS = [
 const S = {
   // ---- common
   appName: ['Aapli BMC', 'आपली BMC', 'आपली BMC'],
+  studentProject: ['Student Project', 'छात्र परियोजना', 'विद्यार्थी प्रकल्प'],
   next: ['Next', 'आगे', 'पुढे'],
   or: ['or', 'या', 'किंवा'],
   all: ['All', 'सभी', 'सर्व'],

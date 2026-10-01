@@ -5,7 +5,28 @@ import { Logo, MascotHead } from './brand.jsx'
 import { LANGS, useLang } from './i18n.jsx'
 
 export function Screen({ tabs = true, children, className = '' }) {
-  return <div className={`screen fade-in ${tabs ? 'with-tabs' : ''} ${className}`}>{children}</div>
+  return (
+    <div className={`screen fade-in ${tabs ? 'with-tabs' : ''} ${className}`}>
+      {children}
+      <AppFooter />
+    </div>
+  )
+}
+
+/* Institutional footer, shown at the bottom of every screen */
+export function AppFooter() {
+  const { t } = useLang()
+  return (
+    <footer className="appfoot">
+      <img className="appfoot-logo" src="/BITSlogo.svg" alt="BITS Design School" width="39" height="52" />
+      <div className="appfoot-text">
+        <span className="appfoot-title">{t('studentProject')}</span>
+        <span className="appfoot-copy">
+          © BITS Design School, BITS Pilani Mumbai Campus. All Rights Reserved.
+        </span>
+      </div>
+    </footer>
+  )
 }
 
 /* EN / हिं / मरा segmented toggle, present on every screen */
