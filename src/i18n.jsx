@@ -13,6 +13,7 @@ const S = {
   studentProject: ['Student Project', 'छात्र परियोजना', 'विद्यार्थी प्रकल्प'],
   students: ['Students', 'छात्र', 'विद्यार्थी'],
   faculty: ['Faculty', 'फैकल्टी', 'प्राध्यापक'],
+  academicFellow: ['Academic Fellow', 'अकादमिक फेलो', 'शैक्षणिक फेलो'],
   next: ['Next', 'आगे', 'पुढे'],
   or: ['or', 'या', 'किंवा'],
   all: ['All', 'सभी', 'सर्व'],
